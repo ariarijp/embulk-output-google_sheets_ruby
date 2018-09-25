@@ -14,6 +14,7 @@ module Embulk
       def self.transaction(config, _schema, _count)
         task = {
           'spreadsheet_id' => config.param('spreadsheet_id', :string),
+          'range' => config.param('range', :string, default: 'A1'),
           'credentials_path' => config.param('credentials_path',
                                              :string,
                                              default: 'credentials.json')
@@ -27,6 +28,7 @@ module Embulk
       def init
         @spreadsheet_id = task['spreadsheet_id']
         @credentials_path = task['credentials_path']
+        @range = task['range']
         @rows = []
         @rows << schema.map(&:name)
 
@@ -43,7 +45,7 @@ module Embulk
 
       def commit
         value_range = Google::Apis::SheetsV4::ValueRange.new
-        value_range.range = 'A1'
+        value_range.range = @range
         value_range.major_dimension = 'ROWS'
         value_range.values = @rows
 
