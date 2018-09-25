@@ -1,23 +1,25 @@
 require 'fileutils'
 require 'google/apis/sheets_v4'
 require 'googleauth'
-require 'googleauth/stores/file_token_store'
 
 APPLICATION_NAME = 'embulk-output-google_sheets_ruby'.freeze
 SCOPE = Google::Apis::SheetsV4::AUTH_SPREADSHEETS
 
 module Embulk
   module Output
+    # Google Sheets Ruby output plugin for Embulk
     class GoogleSheetsRuby < OutputPlugin
       Plugin.register_output('google_sheets_ruby', self)
 
-      def self.transaction(config, schema, count, &control)
+      def self.transaction(config, _schema, _count)
         task = {
           'spreadsheet_id' => config.param('spreadsheet_id', :string),
-          'credentials_path' => config.param('credentials_path', :string, default: 'credentials.json'),
+          'credentials_path' => config.param('credentials_path',
+                                             :string,
+                                             default: 'credentials.json')
         }
 
-        task_reports = yield(task)
+        yield(task)
 
         {}
       end
@@ -26,9 +28,7 @@ module Embulk
         @spreadsheet_id = task['spreadsheet_id']
         @credentials_path = task['credentials_path']
         @rows = []
-        @rows << schema.map do |column|
-          column.name
-        end
+        @rows << schema.map(&:name)
 
         @service = Google::Apis::SheetsV4::SheetsService.new
         @service.client_options.application_name = APPLICATION_NAME
@@ -47,12 +47,7 @@ module Embulk
         value_range.major_dimension = 'ROWS'
         value_range.values = @rows
 
-        @service.update_spreadsheet_value(
-          @spreadsheet_id, 
-          value_range.range,
-          value_range,
-          value_input_option: 'USER_ENTERED',
-        )
+        update_sheet(value_range)
 
         {}
       end
@@ -65,6 +60,15 @@ module Embulk
         authorizer.fetch_access_token!
 
         authorizer
+      end
+
+      def update_sheet(value_range)
+        @service.update_spreadsheet_value(
+          @spreadsheet_id,
+          value_range.range,
+          value_range,
+          value_input_option: 'USER_ENTERED'
+        )
       end
     end
   end
