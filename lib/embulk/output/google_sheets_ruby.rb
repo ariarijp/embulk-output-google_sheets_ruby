@@ -8,7 +8,7 @@ SCOPE = Google::Apis::SheetsV4::AUTH_SPREADSHEETS
 
 module Embulk
   module Output
-    class GoogleSheets < OutputPlugin
+    class GoogleSheetsRuby < OutputPlugin
       Plugin.register_output('google_sheets_ruby', self)
 
       def self.transaction(config, schema, count, &control)
