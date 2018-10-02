@@ -1,6 +1,6 @@
 # Google Sheets Ruby output plugin for Embulk
 
-TODO: Write short description here and embulk-output-google_sheets_ruby.gemspec file.
+Dumps records to Google Sheets.
 
 ## Overview
 
@@ -21,6 +21,7 @@ out:
   type: google_sheets_ruby
   spreadsheet_id: YOUR_SPREAD_SHEET_ID
   credentials_path: /path/to/credentials.json
+  range: A1
 ```
 
 
