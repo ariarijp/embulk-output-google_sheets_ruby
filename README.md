@@ -22,6 +22,7 @@ Dumps records to Google Sheets.
 
 - if `auth_method` is `service_account`, set the service account credential json file path.
 - if `auth_method` is `authorized_user`, this plugin supposes the format is the below.
+  https://github.com/medjed/embulk-input-google_spreadsheets#prepare-json-file-for-auth_method-authorized_user
 
 ```json
 {
@@ -29,6 +30,19 @@ Dumps records to Google Sheets.
   "client_secret": "xxxxxxxxxxx",
   "refresh_token": "xxxxxxxxxxx"
 }
+```
+
+## Prepare JSON file for auth_method: authorized_user
+
+You may use [example/setup_authorized_user_credentials.rb](example/setup_authorized_user_credentials.rb) to prepare OAuth token.
+
+Go to GCP console > API Manager > Credentials > Create 'OAuth Client ID'. Get the client id and client secret.
+
+Run `setup_authorized_user_credentials.rb` to get `refresh_token`.
+
+```
+bundle --path vendor/bundle
+bundle exec ruby example/setup_authorized_user_credentials.rb
 ```
 
 ## Example

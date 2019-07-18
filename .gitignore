@@ -4,3 +4,5 @@
 /.bundle/
 /Gemfile.lock
 /vendor/
+
+authorized_user_credentials.json
