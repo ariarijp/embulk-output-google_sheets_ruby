@@ -1,7 +1,7 @@
 
 Gem::Specification.new do |spec|
   spec.name          = 'embulk-output-google_sheets_ruby'
-  spec.version       = '0.1.0'
+  spec.version       = '0.1.1'
   spec.authors       = ['ariarijp']
   spec.summary       = 'Google Sheets Ruby output plugin for Embulk'
   spec.description   = 'Dumps records to Google Sheets.'
