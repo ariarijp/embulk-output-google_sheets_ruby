@@ -18,7 +18,8 @@ module Embulk
           'credentials_path' => config.param('credentials_path',
                                              :string,
                                              default: 'credentials.json'),
-          'auth_method' => config.param('auth_method', :string, default: 'service_account')
+          'auth_method' => config.param('auth_method', :string, default: 'service_account'),
+          'mode' => config.param('mode', :string, default: 'update')
         }
 
         yield(task)
@@ -31,6 +32,7 @@ module Embulk
         @credentials_path = task['credentials_path']
         @range = task['range']
         @auth_method = task['auth_method']
+        @mode = task['mode']
         @rows = []
         @rows << schema.map(&:name)
 
@@ -51,7 +53,14 @@ module Embulk
         value_range.major_dimension = 'ROWS'
         value_range.values = @rows
 
-        update_sheet(value_range)
+        case @mode
+        when 'update'
+          update_sheet(value_range)
+        when 'append'
+          append_sheet(value_range)
+        else
+          raise ConfigError.new("Unknown mode: #{@mode}")
+        end
 
         {}
       end
@@ -79,6 +88,16 @@ module Embulk
           value_range.range,
           value_range,
           value_input_option: 'USER_ENTERED'
+        )
+      end
+
+      def append_sheet(value_range)
+        @service.append_spreadsheet_value(
+          @spreadsheet_id,
+          value_range.range,
+          value_range,
+          value_input_option: 'USER_ENTERED',
+          insert_data_option: 'INSERT_ROWS'
         )
       end
     end
