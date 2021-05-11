@@ -17,6 +17,7 @@ Dumps records to Google Sheets.
 | credentials_path | string | optional    | `"credentials.json"` | keyfile path                           |
 | range            | string | optional    | `"A1"`               |                                        |
 | auth_method      | string | optional    | `service_account`    | `service_account` or `authorized_user` |
+| mode             | string | optional    | `update`             | `update` or `append`                   |
 
 ##### about credentials_path
 
@@ -67,6 +68,14 @@ Run `setup_authorized_user_credentials.rb` to get `refresh_token`.
 bundle --path vendor/bundle
 bundle exec ruby example/setup_authorized_user_credentials.rb
 ```
+
+## mode
+
+mode can be overwritten or added.
+Please check the official API reference.
+
+- `update` : https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/update
+- `append` : https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/append
 
 ## Build
 
