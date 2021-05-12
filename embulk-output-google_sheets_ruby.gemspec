@@ -1,7 +1,7 @@
 
 Gem::Specification.new do |spec|
   spec.name          = 'embulk-output-google_sheets_ruby'
-  spec.version       = '0.1.2'
+  spec.version       = '0.1.3'
   spec.authors       = ['ariarijp']
   spec.summary       = 'Google Sheets Ruby output plugin for Embulk'
   spec.description   = 'Dumps records to Google Sheets.'
@@ -13,7 +13,9 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec)/})
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'google-api-client', '~> 0.8'
+  spec.add_dependency 'google-api-client', '~> 0.32.1'
+  spec.add_dependency 'representable', '~> 3.0.4'
+  spec.add_dependency 'signet', '~> 0.11.0'
 
   spec.add_development_dependency 'bundler', ['>= 1.10.6']
   spec.add_development_dependency 'embulk', ['>= 0.8.39']
