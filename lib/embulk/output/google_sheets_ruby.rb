@@ -34,7 +34,9 @@ module Embulk
         @auth_method = task['auth_method']
         @mode = task['mode']
         @rows = []
-        @rows << schema.map(&:name)
+        if @index == 0
+          @rows << schema.map(&:name)
+        end
 
         @service = Google::Apis::SheetsV4::SheetsService.new
         @service.client_options.application_name = APPLICATION_NAME
